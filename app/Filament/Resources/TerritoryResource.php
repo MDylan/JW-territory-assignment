@@ -19,6 +19,8 @@ class TerritoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
 
+    protected static ?int $navigationSort = 1;
+
     public static function getNavigationLabel(): string
     {
         return __('custom.model.territory.menu');
@@ -32,7 +34,12 @@ class TerritoryResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return __('custom.model.territory.plural_label');
-    }   
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('custom.menu.group.database');
+    }
 
     public static function form(Form $form): Form
     {

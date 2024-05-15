@@ -21,6 +21,8 @@ class DonotdisturbResource extends Resource
 
     protected static ?string $slug = 'do-not-disturbs';
 
+    protected static ?int $navigationSort = 4;
+
     public static function getNavigationLabel(): string
     {
         return __('custom.model.donotdisturb.menu');
