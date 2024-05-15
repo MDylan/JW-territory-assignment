@@ -34,6 +34,11 @@ class DonotdisturbResource extends Resource
         return __('custom.model.donotdisturb.plural_label');
     }
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('custom.menu.group.database');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

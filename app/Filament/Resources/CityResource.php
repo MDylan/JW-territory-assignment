@@ -32,7 +32,12 @@ class CityResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return __('custom.model.city.plural_label');
-    }    
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('custom.menu.group.database');
+    }
 
     public static function form(Form $form): Form
     {

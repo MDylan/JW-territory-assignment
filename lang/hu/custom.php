@@ -18,7 +18,7 @@ return [
             'plural_label' => 'Napló bejegyzések'
         ],
         'publisher' => [
-            'menu' => 'Hírnök',
+            'menu' => 'Hírnökök',
             'label' => 'Hírnök',
             'plural_label' => 'Hírnökök'
         ],
@@ -27,6 +27,11 @@ return [
             'label' => 'Terület',
             'plural_label' => 'Területek'
         ],
+    ],
+    'menu' => [
+        'group' => [
+            'database' => 'Adatok kezelése'
+        ]
     ]
     
 
