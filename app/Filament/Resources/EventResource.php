@@ -19,6 +19,21 @@ class EventResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('custom.model.event.menu');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('custom.model.event.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('custom.model.event.plural_label');
+    }    
+
     public static function form(Form $form): Form
     {
         return $form

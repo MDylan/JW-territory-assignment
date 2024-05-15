@@ -21,7 +21,17 @@ class DonotdisturbResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('Do not disturb');
+        return __('custom.model.donotdisturb.menu');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('custom.model.donotdisturb.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('custom.model.donotdisturb.plural_label');
     }
 
     public static function form(Form $form): Form

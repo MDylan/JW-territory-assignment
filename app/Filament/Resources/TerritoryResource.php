@@ -19,6 +19,21 @@ class TerritoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('custom.model.territory.menu');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('custom.model.territory.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('custom.model.territory.plural_label');
+    }   
+
     public static function form(Form $form): Form
     {
         return $form

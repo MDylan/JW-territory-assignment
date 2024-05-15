@@ -19,6 +19,21 @@ class CityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('custom.model.city.menu');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('custom.model.city.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('custom.model.city.plural_label');
+    }    
+
     public static function form(Form $form): Form
     {
         return $form

@@ -19,6 +19,21 @@ class PublisherResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('custom.model.publisher.menu');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('custom.model.publisher.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('custom.model.publisher.plural_label');
+    }   
+
     public static function form(Form $form): Form
     {
         return $form
