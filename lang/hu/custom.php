@@ -27,10 +27,16 @@ return [
             'label' => 'Terület',
             'plural_label' => 'Területek'
         ],
+        'congregation' => [
+            'menu' => 'Gyülekezetek',
+            'label' => 'Gyülekezet',
+            'plural_label' => 'Gyülekezetek'
+        ],
     ],
     'menu' => [
         'group' => [
-            'database' => 'Adatok kezelése'
+            'database' => 'Adatok kezelése',
+            'admin' => 'Adminisztráció'
         ]
     ]
     

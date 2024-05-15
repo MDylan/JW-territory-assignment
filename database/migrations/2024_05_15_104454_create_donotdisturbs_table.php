@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('donotdisturbs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('congregation_id')->constrained()->cascadeOnDelete();
             $table->foreignId('territory_id')->constrained()->cascadeOnDelete();
             $table->string('name')->nullable();
             $table->date('last_visit');

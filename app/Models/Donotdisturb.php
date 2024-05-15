@@ -18,6 +18,11 @@ class Donotdisturb extends Model
 
     public function territory() : BelongsTo 
     {
-        $this->belongsTo(Territory::class);
+        return $this->belongsTo(Territory::class);
+    }
+
+    public function congregation(): BelongsTo
+    {
+        return $this->belongsTo(Congregation::class);
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Tenancy\EditCongregationProfile;
+use App\Filament\Pages\Tenancy\RegisterCongregation;
+use App\Models\Congregation;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -53,6 +56,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->tenant(Congregation::class, ownershipRelationship:'congregation', slugAttribute: 'slug')
+            ->tenantRegistration(RegisterCongregation::class)
+            ->tenantProfile(EditCongregationProfile::class);;
     }
 }

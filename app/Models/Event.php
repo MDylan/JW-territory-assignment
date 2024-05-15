@@ -19,11 +19,16 @@ class Event extends Model
 
     public function territory() : BelongsTo
     {
-        $this->belongsTo(Territory::class);
+        return $this->belongsTo(Territory::class);
     }
 
     public function publisher(): BelongsTo
     {
-        $this->belongsTo(Publisher::class);
+        return $this->belongsTo(Publisher::class);
+    }
+
+    public function congregation(): BelongsTo
+    {
+        return $this->belongsTo(Congregation::class);
     }
 }

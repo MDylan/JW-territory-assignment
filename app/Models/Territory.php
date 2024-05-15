@@ -19,16 +19,21 @@ class Territory extends Model
 
     public function city(): BelongsTo
     {
-        $this->belongsTo(City::class);
+        return $this->belongsTo(City::class);
     }
 
     public function donotdisturbs() : HasMany 
     {
-        $this->hasMany(Donotdisturb::class);
+        return $this->hasMany(Donotdisturb::class);
     }
 
     public function events() : HasMany
     {
-        $this->hasMany(Event::class);
+        return $this->hasMany(Event::class);
+    }
+
+    public function congregation(): BelongsTo
+    {
+        return $this->belongsTo(Congregation::class);
     }
 }

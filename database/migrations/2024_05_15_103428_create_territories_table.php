@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('territories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('congregation_id')->constrained()->cascadeOnDelete();
             $table->foreignId('city_id')->constrained()->cascadeOnDelete();
             $table->unsignedMediumInteger('number');
             $table->string('comment')->nullable();
