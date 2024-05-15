@@ -19,6 +19,8 @@ class DonotdisturbResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-no-symbol';
 
+    protected static ?string $slug = 'do-not-disturbs';
+
     public static function getNavigationLabel(): string
     {
         return __('custom.model.donotdisturb.menu');
