@@ -39,4 +39,9 @@ class Territory extends Model
     {
         return $this->belongsTo(Congregation::class);
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->number . ' - ' . $this->city->name;
+    }
 }

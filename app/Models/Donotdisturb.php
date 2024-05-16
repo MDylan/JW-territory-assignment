@@ -13,7 +13,8 @@ class Donotdisturb extends Model
     protected $fillable = [
         'name',
         'last_visit',
-        'comment'
+        'comment',
+        'territory_id'
     ];
 
     public function territory() : BelongsTo 

@@ -16,7 +16,7 @@ class EditCongregationProfile extends EditTenantProfile
     public function form(Form $form): Form
     {
         return $form
-            ->schema([TextInput::make('name')
+            ->schema([TextInput::make('name')->translateLabel()
                 ->required(),
             TextInput::make('slug')
                 ->readOnly(),
