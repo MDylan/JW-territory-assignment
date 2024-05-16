@@ -10,7 +10,7 @@ class EditCongregationProfile extends EditTenantProfile
 {
     public static function getLabel(): string
     {
-        return 'Congregation profile';
+        return __('Congregation profile');
     }
 
     public function form(Form $form): Form

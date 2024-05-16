@@ -11,7 +11,7 @@ class RegisterCongregation extends RegisterTenant
 {
     public static function getLabel(): string
     {
-        return 'Create a congregation';
+        return __('Create a congregation');
     }
 
     public function form(Form $form): Form
