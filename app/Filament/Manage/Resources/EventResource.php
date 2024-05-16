@@ -38,18 +38,18 @@ class EventResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('congregation_id')
+                Forms\Components\Select::make('congregation_id')->translateLabel()
                     ->relationship('congregation', 'name')
                     ->required(),
-                Forms\Components\Select::make('territory_id')
+                Forms\Components\Select::make('territory_id')->translateLabel()
                     ->relationship('territory', 'id')
                     ->required(),
-                Forms\Components\Select::make('publisher_id')
+                Forms\Components\Select::make('publisher_id')->translateLabel()
                     ->relationship('publisher', 'name')
                     ->default(null),
-                Forms\Components\DatePicker::make('assigned'),
-                Forms\Components\DatePicker::make('completed'),
-                Forms\Components\TextInput::make('comment')
+                Forms\Components\DatePicker::make('assigned')->translateLabel(),
+                Forms\Components\DatePicker::make('completed')->translateLabel(),
+                Forms\Components\TextInput::make('comment')->translateLabel()
                     ->maxLength(255)
                     ->default(null),
             ]);
@@ -59,32 +59,32 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('congregation.name')
+                Tables\Columns\TextColumn::make('congregation.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('territory.id')
+                Tables\Columns\TextColumn::make('territory.id')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('publisher.name')
+                Tables\Columns\TextColumn::make('publisher.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('assigned')
+                Tables\Columns\TextColumn::make('assigned')->translateLabel()
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('completed')
+                Tables\Columns\TextColumn::make('completed')->translateLabel()
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('comment')
+                Tables\Columns\TextColumn::make('comment')->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
+                Tables\Columns\TextColumn::make('deleted_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

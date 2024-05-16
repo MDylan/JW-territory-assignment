@@ -43,7 +43,16 @@ return [
             'database' => 'Adatok kezelése',
             'admin' => 'Adminisztráció'
         ]
-    ]
+    ],
+    'roles' => [
+        'field_name' => 'Jogosultság',
+        'admin' => 'Adminisztrátor',
+        'normal' => 'Normál felhasználó'
+    ],
+    'fields' => [
+        'role'
+    ],
+
     
 
 ];

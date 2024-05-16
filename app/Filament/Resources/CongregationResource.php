@@ -38,10 +38,10 @@ class CongregationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name')->translateLabel()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('slug')
+                Forms\Components\TextInput::make('slug')->translateLabel()
                     ->required()
                     ->maxLength(255),
             ]);
@@ -51,15 +51,15 @@ class CongregationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                Tables\Columns\TextColumn::make('slug')->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

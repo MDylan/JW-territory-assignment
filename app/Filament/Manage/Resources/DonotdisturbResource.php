@@ -47,18 +47,18 @@ class DonotdisturbResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('congregation_id')
+                Forms\Components\Select::make('congregation_id')->translateLabel()
                     ->relationship('congregation', 'name')
                     ->required(),
-                Forms\Components\Select::make('territory_id')
+                Forms\Components\Select::make('territory_id')->translateLabel()
                     ->relationship('territory', 'id')
                     ->required(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name')->translateLabel()
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\DatePicker::make('last_visit')
+                Forms\Components\DatePicker::make('last_visit')->translateLabel()
                     ->required(),
-                Forms\Components\TextInput::make('comment')
+                Forms\Components\TextInput::make('comment')->translateLabel()
                     ->maxLength(255)
                     ->default(null),
             ]);
@@ -68,24 +68,24 @@ class DonotdisturbResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('congregation.name')
+                Tables\Columns\TextColumn::make('congregation.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('territory.id')
+                Tables\Columns\TextColumn::make('territory.id')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('last_visit')
+                Tables\Columns\TextColumn::make('last_visit')->translateLabel()
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('comment')
+                Tables\Columns\TextColumn::make('comment')->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

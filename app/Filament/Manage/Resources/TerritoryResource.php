@@ -45,16 +45,16 @@ class TerritoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('congregation_id')
+                Forms\Components\Select::make('congregation_id')->translateLabel()
                     ->relationship('congregation', 'name')
                     ->required(),
-                Forms\Components\Select::make('city_id')
+                Forms\Components\Select::make('city_id')->translateLabel()
                     ->relationship('city', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('number')
+                Forms\Components\TextInput::make('number')->translateLabel()
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('comment')
+                Forms\Components\TextInput::make('comment')->translateLabel()
                     ->maxLength(255)
                     ->default(null),
             ]);
@@ -64,26 +64,26 @@ class TerritoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('congregation.name')
+                Tables\Columns\TextColumn::make('congregation.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city.name')
+                Tables\Columns\TextColumn::make('city.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('number')
+                Tables\Columns\TextColumn::make('number')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('comment')
+                Tables\Columns\TextColumn::make('comment')->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
+                Tables\Columns\TextColumn::make('deleted_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

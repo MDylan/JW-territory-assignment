@@ -45,10 +45,10 @@ class PublisherResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('congregation_id')
+                Forms\Components\Select::make('congregation_id')->translateLabel()
                     ->relationship('congregation', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('name')->translateLabel()
                     ->required()
                     ->maxLength(255),
             ]);
@@ -58,20 +58,20 @@ class PublisherResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('congregation.name')
+                Tables\Columns\TextColumn::make('congregation.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
+                Tables\Columns\TextColumn::make('deleted_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

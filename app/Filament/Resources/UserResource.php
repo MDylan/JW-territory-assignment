@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -40,15 +41,18 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(50)
+                    ->translateLabel(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('role')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('normal'),
+                Select::make('role')
+                    ->translateLabel()
+                    ->options([
+                    'admin' => __('custom.roles.admin'),
+                    'normal' =>__('custom.roles.normal'),
+                ])
             ]);
     }
 
@@ -57,21 +61,27 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('role')
+                    ->translateLabel()
                     ->searchable(),
             ])
             ->filters([
