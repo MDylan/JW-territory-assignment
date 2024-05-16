@@ -13,6 +13,7 @@ class Territory extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'city_id',
         'number',
         'comment'
     ];

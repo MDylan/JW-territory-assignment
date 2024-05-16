@@ -5,6 +5,13 @@
     "Created at" : "Létrehozva",
     "Updated at" : "Frissítve",
     "Deleted at" : "Törölve",
-    "comment" : "Megjegyzés",
-    "Congregation" : "Gyülekezet"
+    "City" : "Település",
+    "Comment" : "Megjegyzés",
+    "Congregation" : "Gyülekezet",
+    "Number" : "Terület száma",
+    "Territory" : "Terület",
+    "Last visit" : "Legutóbbi megkeresés",
+    "Publisher" : "Hírnök",
+    "Assigned" : "Kiutalva",
+    "Completed" : "Befejezve"
 }

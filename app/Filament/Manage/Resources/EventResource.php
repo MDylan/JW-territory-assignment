@@ -38,9 +38,6 @@ class EventResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('congregation_id')->translateLabel()
-                    ->relationship('congregation', 'name')
-                    ->required(),
                 Forms\Components\Select::make('territory_id')->translateLabel()
                     ->relationship('territory', 'id')
                     ->required(),
@@ -59,9 +56,6 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('congregation.name')->translateLabel()
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('territory.id')->translateLabel()
                     ->numeric()
                     ->sortable(),

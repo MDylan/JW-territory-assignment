@@ -19,6 +19,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Manage\Pages\Tenancy\EditCongregationProfile;
 use App\Filament\Manage\Pages\Tenancy\RegisterCongregation;
+use App\Http\Middleware\ApplyTenantScopes;
 use App\Models\Congregation;
 
 class ManagePanelProvider extends PanelProvider
@@ -51,6 +52,7 @@ class ManagePanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                ApplyTenantScopes::class
             ])
             ->authMiddleware([
                 Authenticate::class,

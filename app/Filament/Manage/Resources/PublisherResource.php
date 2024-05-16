@@ -45,9 +45,6 @@ class PublisherResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('congregation_id')->translateLabel()
-                    ->relationship('congregation', 'name')
-                    ->required(),
                 Forms\Components\TextInput::make('name')->translateLabel()
                     ->required()
                     ->maxLength(255),
@@ -58,9 +55,6 @@ class PublisherResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('congregation.name')->translateLabel()
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->translateLabel()

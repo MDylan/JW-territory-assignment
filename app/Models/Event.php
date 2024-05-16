@@ -12,6 +12,7 @@ class Event extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'territory_id',
         'assigned',
         'completed',
         'comment'

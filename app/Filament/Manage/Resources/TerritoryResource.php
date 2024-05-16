@@ -4,6 +4,7 @@ namespace App\Filament\Manage\Resources;
 
 use App\Filament\Manage\Resources\TerritoryResource\Pages;
 use App\Filament\Manage\Resources\TerritoryResource\RelationManagers;
+use App\Models\Congregation;
 use App\Models\Territory;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -45,9 +46,6 @@ class TerritoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('congregation_id')->translateLabel()
-                    ->relationship('congregation', 'name')
-                    ->required(),
                 Forms\Components\Select::make('city_id')->translateLabel()
                     ->relationship('city', 'name')
                     ->required(),
@@ -64,13 +62,10 @@ class TerritoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('congregation.name')->translateLabel()
+                Tables\Columns\TextColumn::make('number')->translateLabel()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('city.name')->translateLabel()
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('number')->translateLabel()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('comment')->translateLabel()
