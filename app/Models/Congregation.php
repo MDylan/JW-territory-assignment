@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Congregation extends Model
 {
@@ -15,6 +16,31 @@ class Congregation extends Model
         'name',
         'slug'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        //To generate unique slugs
+        static::creating(function ($congregation) {
+            $congregation->slug = $congregation->generateUniqueSlug($congregation->name);
+        });
+    }
+
+    // Function to generate unique slug
+    protected function generateUniqueSlug($name)
+    {
+        $slug = Str::slug($name);
+        $count = 1;
+
+        // Check if the slug already exists
+        while (static::whereSlug($slug)->exists()) {
+            $slug = Str::slug($name) . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
+    }
 
     public function publishers() : HasMany
     {

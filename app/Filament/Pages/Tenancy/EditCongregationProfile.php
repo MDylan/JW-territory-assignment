@@ -16,10 +16,10 @@ class EditCongregationProfile extends EditTenantProfile
     public function form(Form $form): Form
     {
         return $form
-            ->schema([
-                TextInput::make('name'),
-                TextInput::make('slug'),
-                // ...
-            ]);
+            ->schema([TextInput::make('name')
+                ->required(),
+            TextInput::make('slug')
+                ->readOnly(),
+            ])->columns(2);
     }
 }

@@ -6,6 +6,9 @@ use App\Models\Congregation;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 
 class RegisterCongregation extends RegisterTenant
 {
@@ -18,8 +21,8 @@ class RegisterCongregation extends RegisterTenant
     {
         return $form
             ->schema([
-                TextInput::make('name'),
-                TextInput::make('slug'),
+                TextInput::make('name')
+                    ->required()
             ]);
     }
 
