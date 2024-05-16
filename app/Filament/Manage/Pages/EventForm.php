@@ -13,8 +13,11 @@ use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Support\Exceptions\Halt;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 
 class EventForm extends Page implements HasForms
 {
@@ -53,11 +56,18 @@ class EventForm extends Page implements HasForms
                         Forms\Components\Select::make('territory_id')->label(__('Territory'))
                             ->options(Territory::all()->pluck('full_name', 'id'))
                             ->searchable()
+                            ->live()
                             ->required(),
+                        Forms\Components\Placeholder::make('')
+                            ->content(function (Get $get) {
+                                return new HtmlString($this->getTerritoryImage($get('territory_id')));
+                            }),
                         Forms\Components\Select::make('publisher_id')->label(__('Publisher'))
                             ->options(Publisher::all()->pluck('name', 'id'))
                             ->searchable()
-                            ->required(),
+                            ->hidden(
+                                fn (Get $get): bool => $this->getTerritoryPublisher($get('territory_id')))
+                                ->required(),
                         Forms\Components\ToggleButtons::make('status')->translateLabel()
                             ->options([
                                 'assigned' => __('Assigned'),
@@ -71,8 +81,10 @@ class EventForm extends Page implements HasForms
                                 'assigned' => 'info',
                                 'completed' => 'success',
                             ])
+                            ->default(fn (Get $get): bool => $this->getDefaultStatus($get('territory_id')))
                             ->inline(),
-                        Forms\Components\DatePicker::make('selected_date')->translateLabel()->required()
+                        Forms\Components\DatePicker::make('selected_date')->translateLabel()->required(),
+
                     ])
 
             ])
@@ -88,6 +100,52 @@ class EventForm extends Page implements HasForms
             ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
             ->submit('save'),
         ];
+    }
+
+    private function getTerritoryPublisher($territory_id)
+    {
+
+        if(!$territory_id) return true;
+
+        $territory = Event::where('congregation_id', Filament::getTenant()->id)
+            ->whereNull('completed')
+            ->where('territory_id', $territory_id)
+            ->first();
+        if($territory === null) return false;
+        return true;
+    }
+
+    private function getDefaultStatus($territory_id)
+    {
+        if (!$territory_id) return 'assigned';
+
+        $territory = Event::where('congregation_id', Filament::getTenant()->id)
+            ->whereNull('completed')
+            ->where('territory_id', $territory_id)
+            ->first();
+        if ($territory === null) return 'completed';
+        return 'assigned';
+    }
+
+    private function getTerritoryImage($territory_id) {
+
+        if (!$territory_id) return '';
+
+        $string = '<div class="flex flex-row gap-4 justify-center items-center">';
+
+        $territory = Territory::find($territory_id);
+        if($territory->image_1) {
+            $url = $territory->image_1;
+            $string .= '<div class="basis-1/2"><img src="/storage/'. $url. '" style="height:75px;cursor:pointer;" class="simple-light-box-img-indicator" x-on:click="SimpleLightBox.open(event, \'' . $url . '\')" /></div>';
+        }
+        if ($territory->image_2) {
+            $url = $territory->image_2;
+            $string .= '<div class="basis-1/2"><img src="/storage/' . $url . '" style="height:75px;cursor:pointer;" class="simple-light-box-img-indicator" x-on:click="SimpleLightBox.open(event, \'' . $url . '\')" /></div>';
+        }
+        $string .= '</div>';
+
+        return $string;
+        //max-w-none object-cover object-center ring-white dark:ring-gray-900  simple-light-box-img-indicator
     }
 
     public function save(): void

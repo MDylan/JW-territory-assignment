@@ -56,12 +56,16 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('territory.id')->translateLabel()
+                Tables\Columns\TextColumn::make('territory.number')->translateLabel()
                     ->numeric()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('territory.city.name')->translateLabel()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('publisher.name')->translateLabel()
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('assigned')->translateLabel()
                     ->date()
                     ->sortable(),

@@ -16,7 +16,8 @@ class Event extends Model
         'territory_id',
         'assigned',
         'completed',
-        'comment'
+        'comment',
+        'publisher_id'
     ];
 
     public function territory() : BelongsTo
