@@ -85,8 +85,8 @@ class TerritoryResource extends Resource
                 Tables\Columns\TextColumn::make('number')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image_1')->translateLabel()->height(75),
-                Tables\Columns\ImageColumn::make('image_2')->translateLabel()->height(75),
+                Tables\Columns\ImageColumn::make('image_1')->translateLabel()->height(75)->simpleLightbox(),
+                Tables\Columns\ImageColumn::make('image_2')->translateLabel()->height(75)->simpleLightbox(),
                 Tables\Columns\TextColumn::make('city.name')->translateLabel()
                     ->numeric()
                     ->sortable(),

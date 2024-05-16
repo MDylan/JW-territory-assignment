@@ -21,6 +21,7 @@ use App\Filament\Manage\Pages\Tenancy\EditCongregationProfile;
 use App\Filament\Manage\Pages\Tenancy\RegisterCongregation;
 use App\Http\Middleware\ApplyTenantScopes;
 use App\Models\Congregation;
+use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 
 class ManagePanelProvider extends PanelProvider
 {
@@ -59,6 +60,7 @@ class ManagePanelProvider extends PanelProvider
             ])
             ->tenant(Congregation::class, ownershipRelationship: 'congregation', slugAttribute: 'slug')
             ->tenantRegistration(RegisterCongregation::class)
-            ->tenantProfile(EditCongregationProfile::class);;
+            ->tenantProfile(EditCongregationProfile::class)
+            ->plugin(SimpleLightBoxPlugin::make());
     }
 }
