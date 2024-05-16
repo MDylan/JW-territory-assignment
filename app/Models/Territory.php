@@ -15,7 +15,9 @@ class Territory extends Model
     protected $fillable = [
         'city_id',
         'number',
-        'comment'
+        'comment',
+        'image_1',
+        'image_2',
     ];
 
     public function city(): BelongsTo

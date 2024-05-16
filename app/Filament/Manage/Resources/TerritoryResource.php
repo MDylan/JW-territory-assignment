@@ -52,6 +52,26 @@ class TerritoryResource extends Resource
                 Forms\Components\TextInput::make('number')->translateLabel()
                     ->required()
                     ->numeric(),
+                Forms\Components\FileUpload::make('image_1')->translateLabel()
+                    ->image()
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '146:75',
+                        '146:95',
+                    ])
+                    ->imageEditorMode(2)
+                    ->downloadable()
+                    ->panelAspectRatio('146:95'),
+                Forms\Components\FileUpload::make('image_2')->translateLabel()
+                    ->image()
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '146:75',
+                        '146:95',
+                    ])
+                    ->imageEditorMode(2)
+                    ->downloadable()
+                    ->panelAspectRatio('146:95'),
                 Forms\Components\TextInput::make('comment')->translateLabel()
                     ->maxLength(255)
                     ->default(null),
@@ -65,6 +85,8 @@ class TerritoryResource extends Resource
                 Tables\Columns\TextColumn::make('number')->translateLabel()
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\ImageColumn::make('image_1')->translateLabel()->height(75),
+                Tables\Columns\ImageColumn::make('image_2')->translateLabel()->height(75),
                 Tables\Columns\TextColumn::make('city.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
