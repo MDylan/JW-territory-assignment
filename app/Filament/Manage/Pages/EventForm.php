@@ -62,28 +62,39 @@ class EventForm extends Page implements HasForms
                             ->content(function (Get $get) {
                                 return new HtmlString($this->getTerritoryImage($get('territory_id')));
                             }),
+
+                Forms\Components\Placeholder::make('')
+                    ->content(function (Get $get) {
+                        if(!$get('territory_id')) return '';
+                        return  new HtmlString($this->getLastPublisher($get('territory_id')));
+                        // $completed = $this->getCompleted($get('territory_id'));
+                        // if($completed) return '<div class="info">'.__('Assigned').'</div>';
+                        // else return __('Completed');
+                    }),
                         Forms\Components\Select::make('publisher_id')->label(__('Publisher'))
-                            ->options(Publisher::all()->pluck('name', 'id'))
+                            ->options(Publisher::where('congregation_id', Filament::getTenant()->id)->pluck('name', 'id'))
                             ->searchable()
                             ->hidden(
                                 fn (Get $get): bool => $this->getTerritoryPublisher($get('territory_id')))
                                 ->required(),
-                        Forms\Components\ToggleButtons::make('status')->translateLabel()
-                            ->options([
-                                'assigned' => __('Assigned'),
-                                'completed' => __('Completed')
-                            ])
-                            ->icons([
-                                'assigned' => 'heroicon-o-arrow-up-on-square',
-                                'completed' => 'heroicon-o-arrow-down-on-square',
-                            ])
-                            ->colors([
-                                'assigned' => 'info',
-                                'completed' => 'success',
-                            ])
-                            ->default(fn (Get $get): bool => $this->getDefaultStatus($get('territory_id')))
-                            ->inline(),
-                        Forms\Components\DatePicker::make('selected_date')->translateLabel()->required(),
+                        // Forms\Components\ToggleButtons::make('status')->translateLabel()
+                        //     ->options([
+                        //         'assigned' => __('Assigned'),
+                        //         'completed' => __('Completed')
+                        //     ])
+                        //     ->icons([
+                        //         'assigned' => 'heroicon-o-arrow-up-on-square',
+                        //         'completed' => 'heroicon-o-arrow-down-on-square',
+                        //     ])
+                        //     ->colors([
+                        //         'assigned' => 'info',
+                        //         'completed' => 'success',
+                        //     ])
+                        //     ->default(fn (Get $get): string => $this->getDefaultStatus($get('territory_id')))
+                        //     ->live()
+                        //     ->inline(),
+                        Forms\Components\DatePicker::make('selected_date')->translateLabel()->required()
+                        ->hidden(fn (Get $get): bool => !$get('territory_id') ),
 
                     ])
 
@@ -115,6 +126,43 @@ class EventForm extends Page implements HasForms
         return true;
     }
 
+    private function getCompleted($territory_id) : bool
+    {
+        if (!$territory_id) return false;
+
+        $territory = Event::where('congregation_id', Filament::getTenant()->id)
+            ->whereNull('completed')
+            ->where('territory_id', $territory_id)
+            ->first();
+        // dd($territory);
+        if ($territory === null) return true;
+        return false;
+    }
+
+    private function getLastPublisher($territory_id) : string
+    {
+        if (!$territory_id) return '';
+
+        $string = '';
+        $string .= '<div class="flex justify-center items-center">';
+        $territory = Event::with('publisher')->where('congregation_id', Filament::getTenant()->id)
+            ->where('territory_id', $territory_id)
+            ->latest()
+            ->first();
+        //  dd($territory);
+        if($territory === null) $string .= __('custom.not_assigned');
+        else {
+            if($territory->completed) {
+                $string .= __('custom.last_completed', ['name' => $territory->publisher->name ?? __('custom.not_defined'), 'date' => $territory->completed]);
+                
+            } elseif($territory->assigned) {
+                $string .= __('custom.assigned_to', ['name' => $territory->publisher->name ?? __('custom.not_defined'), 'date' => $territory->assigned]);            
+            }
+        }
+        $string .= '</div>';
+        return $string;
+    }
+
     private function getDefaultStatus($territory_id)
     {
         if (!$territory_id) return 'assigned';
@@ -123,6 +171,7 @@ class EventForm extends Page implements HasForms
             ->whereNull('completed')
             ->where('territory_id', $territory_id)
             ->first();
+        dd($territory);
         if ($territory === null) return 'completed';
         return 'assigned';
     }
@@ -131,18 +180,23 @@ class EventForm extends Page implements HasForms
 
         if (!$territory_id) return '';
 
-        $string = '<div class="flex flex-row gap-4 justify-center items-center">';
-
+        $string = '';
         $territory = Territory::find($territory_id);
-        if($territory->image_1) {
-            $url = $territory->image_1;
-            $string .= '<div class="basis-1/2"><img src="/storage/'. $url. '" style="height:75px;cursor:pointer;" class="simple-light-box-img-indicator" x-on:click="SimpleLightBox.open(event, \'' . $url . '\')" /></div>';
+
+        if ($territory->image_1 || $territory->image_2) {
+
+            $string .= '<div class="flex flex-row gap-4 justify-center items-center">';
+            if($territory->image_1) {
+                $url = $territory->image_1;
+                $string .= '<div class="basis-1/2"><img src="/storage/'. $url. '" style="height:75px;cursor:pointer;" class="simple-light-box-img-indicator" x-on:click="SimpleLightBox.open(event, \'' . $url . '\')" /></div>';
+            }
+            if ($territory->image_2) {
+                $url = $territory->image_2;
+                $string .= '<div class="basis-1/2"><img src="/storage/' . $url . '" style="height:75px;cursor:pointer;" class="simple-light-box-img-indicator" x-on:click="SimpleLightBox.open(event, \'' . $url . '\')" /></div>';
+            }
+            $string .= '</div>';
         }
-        if ($territory->image_2) {
-            $url = $territory->image_2;
-            $string .= '<div class="basis-1/2"><img src="/storage/' . $url . '" style="height:75px;cursor:pointer;" class="simple-light-box-img-indicator" x-on:click="SimpleLightBox.open(event, \'' . $url . '\')" /></div>';
-        }
-        $string .= '</div>';
+        
 
         return $string;
         //max-w-none object-cover object-center ring-white dark:ring-gray-900  simple-light-box-img-indicator

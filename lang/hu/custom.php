@@ -52,7 +52,10 @@ return [
     'fields' => [
         'role'
     ],
-
+    'assigned_to' => ':name munkálja :date óta',
+    'last_completed' => ':name munkálta be legutóbb ekkor: :date',
+    'not_assigned' => 'Még senki sem munkálta',
+    'not_defined' => 'Nem ismert',
     
 
 ];
