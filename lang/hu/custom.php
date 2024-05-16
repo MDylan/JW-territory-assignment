@@ -32,6 +32,11 @@ return [
             'label' => 'Gyülekezet',
             'plural_label' => 'Gyülekezetek'
         ],
+        'user' => [
+            'menu' => 'Felhasználók',
+            'label' => 'Felhasználó',
+            'plural_label' => 'Felhasználók'
+        ],
     ],
     'menu' => [
         'group' => [

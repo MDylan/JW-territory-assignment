@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Illuminate\Support\Collection;
 use Filament\Panel;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements HasTenants
+class User extends Authenticatable implements HasTenants, FilamentUser
 {
     use HasFactory, Notifiable;
 
@@ -26,6 +27,7 @@ class User extends Authenticatable implements HasTenants
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -64,5 +66,14 @@ class User extends Authenticatable implements HasTenants
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->congregations()->whereKey($tenant)->exists();
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return $this->role && $this->hasVerifiedEmail();
+        }
+
+        return true;
     }
 }
