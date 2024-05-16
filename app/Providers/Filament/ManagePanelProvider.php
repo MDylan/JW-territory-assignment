@@ -61,6 +61,8 @@ class ManagePanelProvider extends PanelProvider
             ->tenant(Congregation::class, ownershipRelationship: 'congregation', slugAttribute: 'slug')
             ->tenantRegistration(RegisterCongregation::class)
             ->tenantProfile(EditCongregationProfile::class)
-            ->plugin(SimpleLightBoxPlugin::make());
+            ->plugin(SimpleLightBoxPlugin::make())
+            ->brandName(__('Handling Territores'))
+            ->brandLogo(fn () => view('filament.logo'));
     }
 }

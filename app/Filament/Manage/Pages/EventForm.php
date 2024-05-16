@@ -100,11 +100,31 @@ class EventForm extends Page implements HasForms
 
             if($data['status'] == 'assigned') {
                 $data['assigned'] = $data['selected_date'];
+                unset($data['status']);
+                unset($data['selected_date']);
+                Event::create($data);
             } else {
                 $data['completed'] = $data['selected_date'];
-            }            
 
-            Event::create($data);
+                unset($data['status']);
+                unset($data['selected_date']);
+
+                // dd($data);
+
+                Event::updateOrCreate([
+                    'territory_id' => $data['territory_id'],
+                    'congregation_id' => $data['congregation_id'],
+                    'completed' => null
+                ], $data);
+
+                // Event::where('territory_id', $data['territory_id'])
+                //     ->where('congregation_id', $data['congregation_id'])
+                //     ->whereNull('completed')
+                //     ->update($data);
+            }
+
+
+            
         } catch (Halt $exception) {
             return;
         }
