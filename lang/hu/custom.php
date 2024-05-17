@@ -56,6 +56,11 @@ return [
     'last_completed' => ':name munkálta be legutóbb ekkor: :date',
     'not_assigned' => 'Még senki sem munkálta',
     'not_defined' => 'Nem ismert',
+    'validation' => [
+        'assigned_before_or_equal' => 'A kiutalás nem lehet későbbi mint a mai nap.',
+        'completed_before_assigned' => 'A befejezés nem lehet korábbi mint :date',
+        'completed_before_or_equal' => 'A bejefezés nem lehet későbbi mint a mai nap.',
+    ]
     
 
 ];

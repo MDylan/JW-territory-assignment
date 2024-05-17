@@ -5,6 +5,7 @@ namespace App\Filament\Manage\Pages;
 use App\Models\Event;
 use App\Models\Publisher;
 use App\Models\Territory;
+use Closure;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -16,9 +17,9 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Support\Exceptions\Halt;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
+use Illuminate\Validation\Rule;
 
 class EventForm extends Page implements HasForms
 {
@@ -31,9 +32,16 @@ class EventForm extends Page implements HasForms
 
     public ?array $data = [];
 
+    public ?array $last_assignment = [];
+
     public function getHeading(): string
     {
         return false; //__('Handling a territory');
+    }
+
+    public function getTitle(): string
+    {
+        return __('Handling a territory');
     }
 
     public static function getNavigationLabel(): string
@@ -43,9 +51,7 @@ class EventForm extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill([
-            'selected_date' => date("Y-m-d")
-        ]);
+        $this->form->fill([]);
     }
 
     public function form(Form $form): Form
@@ -76,9 +82,38 @@ class EventForm extends Page implements HasForms
                             ->searchable()
                             ->hidden(
                                 fn (Get $get): bool => $this->getTerritoryPublisher($get('territory_id')))
-                                ->required(),
-                        Forms\Components\DatePicker::make('selected_date')->translateLabel()->required()
-                        ->hidden(fn (Get $get): bool => !$get('territory_id') ),
+                            ->required(),
+                        Forms\Components\DatePicker::make('assigned')
+                            ->translateLabel()
+                            ->required()
+                            ->beforeOrEqual('today')
+                            ->validationMessages([
+                                'before_or_equal' => __('custom.validation.assigned_before_or_equal'),
+                            ])
+                            ->hidden(function (Get $get): bool {
+                                return !$this->getCompleted($get('territory_id'));
+                            }),
+                        Forms\Components\DatePicker::make('completed')
+                            ->translateLabel()
+                            ->required()
+                            ->beforeOrEqual('today')
+                            ->rules([
+                                fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                                    if(count($this->last_assignment) > 0) {
+                                        if ($value < $this->last_assignment['assigned']) {
+                                            $fail(__('custom.validation.completed_before_assigned', ['date' => $this->last_assignment['assigned']]));
+                                        }
+                                    }
+                                },
+                            ])
+                            ->validationMessages([
+                                'before_or_equal' => __('custom.validation.completed_before_or_equal'),
+                            ])
+                            ->hidden(function (Get $get): bool {
+                                if(!$get('territory_id')) return true;
+                                return $this->getCompleted($get('territory_id'));
+                            }),
+
 
                     ])
 
@@ -123,6 +158,9 @@ class EventForm extends Page implements HasForms
             ->first();
         // dd($territory);
         if ($territory === null) return true;
+        else {
+            $this->last_assignment = $territory->toArray();
+        }
         return false;
     }
 
@@ -150,19 +188,6 @@ class EventForm extends Page implements HasForms
         return $string;
     }
 
-    private function getDefaultStatus($territory_id)
-    {
-        if (!$territory_id) return 'assigned';
-
-        $territory = Event::where('congregation_id', Filament::getTenant()->id)
-            ->whereNull('completed')
-            ->where('territory_id', $territory_id)
-            ->first();
-        dd($territory);
-        if ($territory === null) return 'completed';
-        return 'assigned';
-    }
-
     private function getTerritoryImage($territory_id) {
 
         if (!$territory_id) return '';
@@ -186,54 +211,27 @@ class EventForm extends Page implements HasForms
         
 
         return $string;
-        //max-w-none object-cover object-center ring-white dark:ring-gray-900  simple-light-box-img-indicator
     }
 
     public function save(): void
     {
+
+        $congregation_id = Filament::getTenant()->id;
+
+        if(!$congregation_id) return;
+
         try {
             $data = $this->form->getState();
+            $data['congregation_id'] = $congregation_id;
 
-            $data['congregation_id'] = Filament::getTenant()->id;
+            //dd($data);
+            //Data validated by filament
 
-            $status = $this->getCompleted($data['territory_id']);
-            //dd($data['congregation_id']);            
-
-            if($status) {
-                //Assign territory
-                $data['assigned'] = $data['selected_date'];
-                unset($data['status']);
-                unset($data['selected_date']);
-
-                // @TODO : Validate date field
-                // $validData = Validator::make($data, [
-                //     'congregation_id' => 'required|numeric|',
-                // ]);
-
-                // dd('Assign', $data);
-                Event::create($data);
-            } else {
-                //complete territory
-                $data['completed'] = $data['selected_date'];
-
-                unset($data['status']);
-                unset($data['selected_date']);
-
-                // dd('Complete', $data);
-
-                // Event::updateOrCreate([
-                //     'territory_id' => $data['territory_id'],
-                //     'congregation_id' => $data['congregation_id'],
-                //     'completed' => null
-                // ], $data);
-
-                Event::where('territory_id', $data['territory_id'])
-                    ->where('congregation_id', $data['congregation_id'])
-                    ->whereNull('completed')
-                    ->update($data);
-            }
-
-
+            Event::updateOrCreate([
+                'territory_id' => $data['territory_id'],
+                'congregation_id' => $data['congregation_id'],
+                'completed' => null
+            ], $data);
             
         } catch (Halt $exception) {
             return;
