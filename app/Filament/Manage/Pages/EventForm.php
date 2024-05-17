@@ -62,27 +62,33 @@ class EventForm extends Page implements HasForms
                     ->heading(__('Handling a territory'))
                     ->icon($this->getNavigationIcon())
                     ->schema([
+                        //Territory select
                         Forms\Components\Select::make('territory_id')->label(__('Territory'))
                             ->options(Territory::all()->pluck('full_name', 'id'))
                             ->searchable()
                             ->live()
                             ->required(),
+                        //Territory image and info
                         Forms\Components\Placeholder::make('')
                             ->content(function (Get $get) {
                                 return new HtmlString($this->getTerritoryImage($get('territory_id')));
                             }),
-
-                Forms\Components\Placeholder::make('')
-                    ->content(function (Get $get) {
-                        if(!$get('territory_id')) return '';
-                        return  new HtmlString($this->getLastPublisher($get('territory_id')));
-                    }),
-                        Forms\Components\Select::make('publisher_id')->label(__('Publisher'))
+                        //Territory last info
+                        Forms\Components\Placeholder::make('')
+                            ->content(function (Get $get) {
+                                if(!$get('territory_id')) return '';
+                                return  new HtmlString($this->getLastPublisher($get('territory_id')));
+                            }),
+                        //Publisher select
+                        //TODO: Fix the required error
+                        Forms\Components\Select::make('publisher_id')
+                            ->label(__('Publisher'))
                             ->options(Publisher::where('congregation_id', Filament::getTenant()->id)->pluck('name', 'id'))
                             ->searchable()
                             ->hidden(
                                 fn (Get $get): bool => $this->getTerritoryPublisher($get('territory_id')))
                             ->required(),
+                        //Assigned date
                         Forms\Components\DatePicker::make('assigned')
                             ->translateLabel()
                             ->required()
@@ -93,6 +99,7 @@ class EventForm extends Page implements HasForms
                             ->hidden(function (Get $get): bool {
                                 return !$this->getCompleted($get('territory_id'));
                             }),
+                        //Completed date
                         Forms\Components\DatePicker::make('completed')
                             ->translateLabel()
                             ->required()
