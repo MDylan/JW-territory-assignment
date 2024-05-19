@@ -60,6 +60,7 @@ return [
         'assigned_before_or_equal' => 'A kiutalás nem lehet későbbi mint a mai nap.',
         'completed_before_assigned' => 'A befejezés nem lehet korábbi mint :date',
         'completed_before_or_equal' => 'A bejefezés nem lehet későbbi mint a mai nap.',
+        'assigned_before_completed' => 'A kiutalás nem lehet korábbi mint a legutóbbi befejezés napja :date'
     ]
     
 

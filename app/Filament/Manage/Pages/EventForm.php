@@ -51,7 +51,15 @@ class EventForm extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill([]);
+        $this->setdefault();
+    }
+
+    public function setdefault() {
+        $today = date("Y-m-d");
+        $this->form->fill([
+            'assigned' => $today,
+            'completed' => $today
+        ]);
     }
 
     public function form(Form $form): Form
@@ -93,11 +101,24 @@ class EventForm extends Page implements HasForms
                             ->translateLabel()
                             ->required()
                             ->beforeOrEqual('today')
+                            ->rules([
+                                fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                                    if (count($this->last_assignment) > 0) {
+                                        if ($value < $this->last_assignment['completed']) {
+                                            $fail(__('custom.validation.assigned_before_completed', ['date' => $this->last_assignment['completed']]));
+                                        }
+                                    }
+                                },
+                            ])
                             ->validationMessages([
                                 'before_or_equal' => __('custom.validation.assigned_before_or_equal'),
                             ])
                             ->hidden(function (Get $get): bool {
-                                return !$this->getCompleted($get('territory_id'));
+                                if (!$get('territory_id')) return true;
+                                if (count($this->last_assignment) > 0) {
+                                    if ($this->last_assignment['completed']) return false;
+                                }
+                                return true;
                             }),
                         //Completed date
                         Forms\Components\DatePicker::make('completed')
@@ -118,7 +139,10 @@ class EventForm extends Page implements HasForms
                             ])
                             ->hidden(function (Get $get): bool {
                                 if(!$get('territory_id')) return true;
-                                return $this->getCompleted($get('territory_id'));
+                                if (count($this->last_assignment) > 0) {
+                                    if(!$this->last_assignment['completed']) return false;
+                                }
+                                return true;
                             }),
 
 
@@ -152,24 +176,6 @@ class EventForm extends Page implements HasForms
         return true;
     }
 
-    /**
-     * @return true if territory is assigned currently
-     */
-    private function getCompleted($territory_id) : bool
-    {
-        if (!$territory_id) return false;
-
-        $territory = Event::where('congregation_id', Filament::getTenant()->id)
-            ->whereNull('completed')
-            ->where('territory_id', $territory_id)
-            ->first();
-        // dd($territory);
-        if ($territory === null) return true;
-        else {
-            $this->last_assignment = $territory->toArray();
-        }
-        return false;
-    }
 
     private function getLastPublisher($territory_id) : string
     {
@@ -184,6 +190,7 @@ class EventForm extends Page implements HasForms
         //  dd($territory);
         if($territory === null) $string .= __('custom.not_assigned');
         else {
+            $this->last_assignment = $territory->toArray();
             if($territory->completed) {
                 $string .= __('custom.last_completed', ['name' => $territory->publisher->name ?? __('custom.not_defined'), 'date' => $territory->completed]);
                 
@@ -249,5 +256,6 @@ class EventForm extends Page implements HasForms
             ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
             ->send();
         $this->reset();
+        $this->setdefault();
     }
 }
