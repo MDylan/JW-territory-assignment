@@ -32,7 +32,12 @@ class EventResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return __('custom.model.event.plural_label');
-    } 
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -92,7 +97,7 @@ class EventResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                //Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -114,9 +119,9 @@ class EventResource extends Resource
     {
         return [
             'index' => Pages\ListEvents::route('/'),
-            'create' => Pages\CreateEvent::route('/create'),
+           // 'create' => Pages\CreateEvent::route('/create'),
             'view' => Pages\ViewEvent::route('/{record}'),
-            'edit' => Pages\EditEvent::route('/{record}/edit'),
+           // 'edit' => Pages\EditEvent::route('/{record}/edit'),
         ];
     }
 
