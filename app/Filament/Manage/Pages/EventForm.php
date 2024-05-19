@@ -17,9 +17,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Support\Exceptions\Halt;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
-use Illuminate\Validation\Rule;
 
 class EventForm extends Page implements HasForms
 {
