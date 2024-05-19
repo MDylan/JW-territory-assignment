@@ -88,7 +88,6 @@ class EventForm extends Page implements HasForms
                                 return  new HtmlString($this->getLastPublisher($get('territory_id')));
                             }),
                         //Publisher select
-                        //TODO: Fix the required error
                         Forms\Components\Select::make('publisher_id')
                             ->label(__('Publisher'))
                             ->options(Publisher::where('congregation_id', Filament::getTenant()->id)->pluck('name', 'id'))
@@ -117,8 +116,9 @@ class EventForm extends Page implements HasForms
                                 if (!$get('territory_id')) return true;
                                 if (count($this->last_assignment) > 0) {
                                     if ($this->last_assignment['completed']) return false;
+                                    else return true;
                                 }
-                                return true;
+                                return false;
                             }),
                         //Completed date
                         Forms\Components\DatePicker::make('completed')
@@ -179,6 +179,8 @@ class EventForm extends Page implements HasForms
 
     private function getLastPublisher($territory_id) : string
     {
+        $this->last_assignment = [];
+
         if (!$territory_id) return '';
 
         $string = '';
