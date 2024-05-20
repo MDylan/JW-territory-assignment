@@ -62,5 +62,7 @@
     "Status": "Állapot",
     "Selected date": "Dátum",
     "Handling Territores": "Területek kezelése",
-    "Choose publisher": "Válassz hírnököt"
+    "Choose publisher": "Válassz hírnököt",
+    "Last assigned" : "Legutóbb kiadva",
+    "Last completed" : "Legutóbb munkálva"
 }

@@ -3,8 +3,7 @@
 namespace App\Filament\Manage\Resources;
 
 use App\Filament\Manage\Resources\TerritoryResource\Pages;
-use App\Filament\Manage\Resources\TerritoryResource\RelationManagers;
-use App\Models\Congregation;
+use App\Models\City;
 use App\Models\Territory;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -48,7 +47,19 @@ class TerritoryResource extends Resource
             ->schema([
                 Forms\Components\Select::make('city_id')->translateLabel()
                     ->relationship('city', 'name')
-                    ->required(),
+                    ->required()
+                    ->native(false)
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                        ->translateLabel()
+                        ->required(),
+                    ])
+                    ->createOptionUsing(function (array $data): int {
+                        $city = new City();
+                        $city->name = $data['name'];
+                        $city->save();
+                        return $city->getKey();
+                    }),
                 Forms\Components\TextInput::make('number')->translateLabel()
                     ->required()
                     ->numeric(),
@@ -90,13 +101,9 @@ class TerritoryResource extends Resource
                 Tables\Columns\TextColumn::make('city.name')->translateLabel()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('comment')->translateLabel()
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('last_assigned')->translateLabel(),
+                Tables\Columns\TextColumn::make('last_completed')->translateLabel(),
                 Tables\Columns\TextColumn::make('created_at')->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -111,14 +118,9 @@ class TerritoryResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->requiresConfirmation()->iconButton(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

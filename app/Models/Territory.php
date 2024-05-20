@@ -44,4 +44,16 @@ class Territory extends Model
     {
         return $this->number . ' - ' . $this->city->name;
     }
+
+    public function getLastAssignedAttribute()
+    {
+        $latestEvent = $this->events()->latest()->first();
+        return $latestEvent ? $latestEvent->assigned : '-';
+    }
+
+    public function getLastCompletedAttribute()
+    {
+        $latestEvent = $this->events()->whereNotNull('completed')->latest()->first();
+        return $latestEvent ? $latestEvent->completed : '-';
+    }
 }
